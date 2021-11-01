@@ -13,7 +13,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		//Basic Auth
 		http
-		.authorizeRequests().anyRequest().authenticated()
+		.authorizeRequests()
+		//Ant Matchers + Permit All = Marca páginas que não necessitam autenticação
+		.antMatchers("/").permitAll()
+		.anyRequest().authenticated()
 		.and()
 		.httpBasic();
 	}
