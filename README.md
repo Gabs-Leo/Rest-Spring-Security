@@ -11,6 +11,13 @@ Basic Auth é uma das formas de autenticação que temos, para manter a seguran�
 - Não é possível realizar um logout.
 - Recomenda-se o uso de HTTPS.
 
+## Form-Based Auth
+É o tipo de autenticação que estamos acostumados a ver, que é feita através de um formuláriod entro de uma pagina.
+- Total controle sobre os campos do formulário.
+- Padrão em websites.
+- Podemos fazer logout.
+- HTTPS é recomendado.
+
 ## Cross-Site Request Forgery (csrf)
 <img src="https://www.infosec.com.br/wp-content/uploads/2017/07/cross-site-request-forgery.png" alt="crsf" />
 
