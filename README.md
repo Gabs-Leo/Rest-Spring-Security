@@ -16,6 +16,7 @@ Basic Auth é uma das formas de autenticação que temos, para manter a seguran�
 - Total controle sobre os campos do formulário.
 - Padrão em websites.
 - Podemos fazer logout.
+- Valida uma seção, que dura por volta de 30 minutos.
 - HTTPS é recomendado.
 
 ## Cross-Site Request Forgery (csrf)
