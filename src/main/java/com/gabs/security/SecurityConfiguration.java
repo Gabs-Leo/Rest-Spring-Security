@@ -35,10 +35,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.authorizeRequests()
 		//Ant Matchers + Permit All = Marca páginas que não necessitam autenticação
 		.antMatchers("/").permitAll()
-		.antMatchers("/api/**").hasRole(UserRoles.ADMIN.name())
+		.antMatchers("/api/**").hasAnyRole(UserRoles.STUDENT.name(), UserRoles.ADMIN.name())
 		.anyRequest().authenticated()
 		.and()
-		.httpBasic();
+		.formLogin()
+		//Utilizando página de login personalizada
+		.loginPage("/login").permitAll();
 	}
 
 	@Override
