@@ -30,7 +30,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		//Basic Auth
 		http
 		//.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 		//.and()
@@ -42,13 +41,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.anyRequest().authenticated()
 		.and()
 		.formLogin()
-		//Utilizando página de login personalizada
-		.loginPage("/login").permitAll()
-		.defaultSuccessUrl("/courses", true)
+			//Utilizando página de login personalizada
+			.loginPage("/login")
+			.permitAll()
+			.defaultSuccessUrl("/courses", true)
+			.usernameParameter("username") // Parâmetro personalizado
+			.passwordParameter("password")
 		.and()
 		.rememberMe() //2 semanas por padrão
 			.tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21)) // Adicionando tempo porsonalizado
 			.key("somethingsecured")
+			.rememberMeParameter("remember-me")
 		.and()
 		.logout()
 			.logoutUrl("/logout") //Personalizar rota de logout
@@ -56,7 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.clearAuthentication(true)
 			.invalidateHttpSession(true)
 			.deleteCookies("JSESSIONID", "rememberMe", "_gid", "_ga")
-			.logoutSuccessUrl("/login"); //Personalizar logout success
+			.logoutSuccessUrl("/login");
 	}
 
 	@Override
