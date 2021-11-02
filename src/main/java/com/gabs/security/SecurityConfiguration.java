@@ -1,5 +1,7 @@
 package com.gabs.security;
 
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +42,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.and()
 		.formLogin()
 		//Utilizando página de login personalizada
-		.loginPage("/login").permitAll();
+		.loginPage("/login").permitAll()
+		.defaultSuccessUrl("/courses", true)
+		.and()
+		.rememberMe() //2 semanas por padrão
+			.tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21)) // Adicionando tempo porsonalizado
+			.key("somethingsecured")
+		.and()
+		.logout()
+			.logoutUrl("/logout") //Personalizar rota de logout
+			.clearAuthentication(true)
+			.invalidateHttpSession(true)
+			.deleteCookies("JSESSIONID", "rememberMe", "_gid", "_ga")
+			.logoutSuccessUrl("/login"); //Personalizar logout success
 	}
 
 	@Override

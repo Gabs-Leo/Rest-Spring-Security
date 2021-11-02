@@ -21,6 +21,12 @@
             <label for="password" class="sr-only">Password</label>
             <input type="password" id="password" name="password" class="form-control" placeholder="Password" required="">
         </p>
+        <p>
+            Remember Me?
+            <input type="checkbox" id="remember-me" name="remember-me" class="form-control">
+            <!--Name e Id precisam ser escritos exatamente como "remember-me", para que sejam
+            detectados pelo Spring Security como "RememberMe"-->
+        </p>
         <button class="btn btn-lg btn-success btn-block" type="submit">Sign in</button>
         </form>
     </div>
