@@ -3,6 +3,7 @@ package com.gabs.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -27,9 +28,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		//Basic Auth
 		http
+		.csrf().disable()
 		.authorizeRequests()
 		//Ant Matchers + Permit All = Marca páginas que não necessitam autenticação
 		.antMatchers("/").permitAll()
+		.antMatchers("/api/**").hasRole(UserRoles.ADMIN.name())
+		.antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(UserPermissions.COURSE_WRITE.getPermission())
+		.antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(UserPermissions.COURSE_WRITE.getPermission())
+		.antMatchers(HttpMethod.PUT, "/management/api/**").hasAuthority(UserPermissions.COURSE_WRITE.getPermission())
+		.antMatchers(HttpMethod.GET, "/management/api/**").hasAnyRole(UserRoles.ADMIN.name(), UserRoles.ADMIN_TRAINEE.name())
 		.anyRequest().authenticated()
 		.and()
 		.httpBasic();
@@ -41,17 +48,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		UserDetails gabs = User.builder()
 			.username("Gabs")
 			.password(passwordEncoder.encode("pass"))
-			.roles(UserRoles.ADMIN.name())
+			.authorities(UserRoles.STUDENT.getGrantedAuthorities())
 			.build();
 		
 		UserDetails aylon = User.builder()
 			.username("Syllient")
-			.password(passwordEncoder.encode("fodase"))
-			.roles(UserRoles.STUDENT.name())
+			.password(passwordEncoder.encode("pass"))
+			//.roles(UserRoles.STUDENT.name())
+			.authorities(UserRoles.ADMIN.getGrantedAuthorities())
+			.build();
+		
+		UserDetails lorrana = User.builder()
+			.username("Lorrana")
+			.password(passwordEncoder.encode("pass"))
+			//.roles(UserRoles.ADMIN_TRAINEE.name())
+			.authorities(UserRoles.ADMIN_TRAINEE.getGrantedAuthorities())
 			.build();
 		
 		return new InMemoryUserDetailsManager(
-			gabs, aylon
+			gabs, aylon, lorrana
 		);
 	}
 	

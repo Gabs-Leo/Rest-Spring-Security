@@ -17,4 +17,10 @@ public class Student {
 	public String getStudentName() {
 		return studentName;
 	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return super.toString();
+	}
 }
