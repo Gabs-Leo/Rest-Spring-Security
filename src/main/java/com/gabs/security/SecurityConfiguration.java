@@ -3,7 +3,6 @@ package com.gabs.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,15 +29,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		//Basic Auth
 		http
+		//.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+		//.and()
 		.csrf().disable()
 		.authorizeRequests()
 		//Ant Matchers + Permit All = Marca páginas que não necessitam autenticação
 		.antMatchers("/").permitAll()
 		.antMatchers("/api/**").hasRole(UserRoles.ADMIN.name())
-//		.antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(UserPermissions.COURSE_WRITE.getPermission())
-//		.antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(UserPermissions.COURSE_WRITE.getPermission())
-//		.antMatchers(HttpMethod.PUT, "/management/api/**").hasAuthority(UserPermissions.COURSE_WRITE.getPermission())
-//		.antMatchers(HttpMethod.GET, "/management/api/**").hasAnyRole(UserRoles.ADMIN.name(), UserRoles.ADMIN_TRAINEE.name())
 		.anyRequest().authenticated()
 		.and()
 		.httpBasic();
@@ -54,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.build();
 		
 		UserDetails aylon = User.builder()
-			.username("Syllient")
+			.username("Aylon")
 			.password(passwordEncoder.encode("pass"))
 			//.roles(UserRoles.STUDENT.name())
 			.authorities(UserRoles.ADMIN.getGrantedAuthorities())
